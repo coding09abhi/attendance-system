@@ -1,0 +1,123 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+  margin: 0;
+  padding: 0;
+}
+
+/* 🔹 Navbar: fully merged with page edges */
+.navbar {
+  background: #dd383e;
+  color: white;
+  padding: 10px 20px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;    /* stays at top */
+  top: 0;
+  left: 0;
+  z-index: 1000;
+ 
+}
+
+/* 🔹 Navbar buttons & links */
+.navbar button,
+.navbar a {
+  background: #dd383e;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  margin-left: 10px;
+  text-decoration: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* 🔹 Hover color (#ff6000) */
+.navbar button:hover,
+.navbar a:hover {
+  background: #ff6000;
+}
+
+/* 🔹 Content area (not affecting navbar) */
+.main-content {
+ 
+  margin-top: 90px;   /* 🔹 Add space below navbar (you can adjust to 80–100px) */
+  margin-left: 10px;  /* left margin as before */
+  margin-right: 10px;
+ 
+}
+
+/* Other existing styles */
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #aaa;
+  text-align: center;
+}
+
+input,
+select {
+  padding: 8px;
+  margin: 5px;
+}
+
+.btn {
+  background: #dd383e;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Hover for general buttons */
+.btn:hover {
+  background: #ff6000;
+}
+
+.tab {
+  padding: 20px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 80%;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+table th,
+table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.view-btn {
+  background-color: #dd383e;
+  color: white;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.3s ease;
+}
+
+.view-btn:hover {
+  background-color: #ff6000;
+}

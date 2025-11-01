@@ -1,0 +1,33 @@
+
+# NetBeans build files
+/nbproject/private/
+/build/
+/dist/
+/nbbuild/
+/nbdist/
+/nbactions.xml
+/nb-configuration.xml
+
+# IDE-specific
+/.idea/
+/.vscode/
+/*.iml
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Java files
+*.class
+*.log
+
+# Backup files
+*~
+*.bak
+
+# Server temp files
+*.war
+*.ear
+
+# Local environment configs
+*.env
