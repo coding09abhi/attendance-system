@@ -31,3 +31,9 @@ Thumbs.db
 
 # Local environment configs
 *.env
+"/build/" 
+"/dist/" 
+"*.class" 
+"*.log" 
+".DS_Store" 
+"/nbproject/private/" 
