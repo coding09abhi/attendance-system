@@ -4,6 +4,7 @@
 <html>
 <head>
     <title>Student Login</title>
+    <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
     <style>
         * {
             box-sizing: border-box; /* Fix alignment issue */

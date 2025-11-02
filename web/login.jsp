@@ -70,6 +70,8 @@ if(request.getParameter("login") != null){
 <head>
     <title>Login - Attendance</title>
     <link rel="stylesheet" href="style.css?v=<%= System.currentTimeMillis() %>">
+      <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
+
     <style>
         /* (your styles here - unchanged) */
         body { margin:0; padding:0; background:white; font-family:'Poppins',sans-serif; height:100vh; display:flex; justify-content:center; align-items:center;}
