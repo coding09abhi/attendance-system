@@ -5,18 +5,29 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ include file="db.jsp" %>
+
 <%
     if (session.getAttribute("username") == null) {
         response.sendRedirect("login.jsp");
+        return;
     }
+
     String username = (String) session.getAttribute("username");
 
     String today;
     String selectedDateParam = request.getParameter("date");
-    if (selectedDateParam != null && !selectedDateParam.isEmpty()) {
-        today = selectedDateParam;
-    } else {
-        today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    sdf.setLenient(false);
+    try {
+        if (selectedDateParam != null && !selectedDateParam.isEmpty()) {
+            sdf.parse(selectedDateParam); // validate date
+            today = selectedDateParam;
+        } else {
+            today = sdf.format(new Date());
+        }
+    } catch (Exception e) {
+        today = sdf.format(new Date());
+        request.setAttribute("invalidDate", true);
     }
 %>
 <!DOCTYPE html>
@@ -34,7 +45,6 @@
             padding: 0;
         }
 
-        /* Navbar */
         .navbar {
             position: fixed;
             top: 0;
@@ -71,22 +81,13 @@
         .nav-buttons a:hover {
             background-color: #ff6000;
             color: white;
-            text-decoration: none;
         }
 
-        .nav-buttons a.active {
-            background-color: #dd383e;
-            color: white;
-            font-weight: 600;
-        }
-
-        /* Main content spacing below navbar */
         .content {
             margin-top: 110px;
             padding: 0 25px;
         }
 
-        /* Date selector */
         .date-selector {
             margin: 20px 25px;
             padding: 10px;
@@ -125,7 +126,6 @@
 
         button:hover {
             background-color: #ff6000;
-            color: white;
         }
 
         h2, h3 {
@@ -134,7 +134,6 @@
             text-align: center;
         }
 
-        /* Table styling */
         .report-table {
             border-collapse: collapse;
             width: 90%;
@@ -159,7 +158,6 @@
             background-color: #f9f9f9;
         }
 
-        /* Chart smaller ? visible without scroll */
         .chart-container {
             width: 70%;
             margin: 30px auto;
@@ -177,7 +175,7 @@
     <h3>Principal Panel - <%= username %></h3>
     <div class="nav-buttons">
         <a href="teacher_report.jsp">Teacher Report</a>
-        <a  href="principal_panel.jsp">Overview</a>
+        <a href="principal_panel.jsp" class="active">Overview</a>
         <a href="logout.jsp">Logout</a>
     </div>
 </div>
@@ -191,18 +189,21 @@
         </form>
     </div>
 
+    <% if (request.getAttribute("invalidDate") != null) { %>
+        <p style="color:red;text-align:center;">Invalid date selected. Showing today's data instead.</p>
+    <% } %>
+
     <h2>Attendance Overview for <%= today %></h2>
 
     <%
     try {
-        
         out.println("<table class='report-table'>");
         out.println("<tr><th>Subject</th><th>Total Students</th><th>Present</th><th>Absent</th><th>Status</th></tr>");
 
         PreparedStatement subPS = con.prepareStatement("SELECT subject_name FROM subjects ORDER BY subject_name");
         ResultSet subRS = subPS.executeQuery();
 
-        while(subRS.next()) {
+        while (subRS.next()) {
             String sub = subRS.getString("subject_name");
 
             PreparedStatement ps = con.prepareStatement(
@@ -222,10 +223,10 @@
 
             out.println("<tr>");
             out.println("<td>" + sub + "</td>");
-            out.println("<td>" + (total>0? total : "-") + "</td>");
-            out.println("<td>" + (total>0? present : "-") + "</td>");
-            out.println("<td>" + (total>0? absent : "-") + "</td>");
-            out.println("<td style='color:" + (status.equals("Taken")?"green":"orange") + ";'>" + status + "</td>");
+            out.println("<td>" + (total > 0 ? total : "-") + "</td>");
+            out.println("<td>" + (total > 0 ? present : "-") + "</td>");
+            out.println("<td>" + (total > 0 ? absent : "-") + "</td>");
+            out.println("<td style='color:" + (status.equals("Taken") ? "green" : "orange") + ";'>" + status + "</td>");
             out.println("</tr>");
 
             rs.close();
@@ -256,7 +257,7 @@
             out.println("<p style='color:green;'>No whole-day absentees today ?</p>");
         } else {
             out.println("<table class='report-table'><tr><th>Roll No</th><th>Name</th></tr>");
-            while(rsWhole.next()) {
+            while (rsWhole.next()) {
                 out.println("<tr><td>" + rsWhole.getInt("roll_no") + "</td><td>" + rsWhole.getString("name") + "</td></tr>");
             }
             out.println("</table>");
@@ -264,28 +265,33 @@
         rsWhole.close();
         psWhole.close();
 
+        // ? Fix: correct number of days in month
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH) + 1;
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         List<Integer> daysList = new ArrayList<>();
         List<Double> presentPercentList = new ArrayList<>();
 
-        for (int d=1; d<=31; d++) {
+        for (int d = 1; d <= daysInMonth; d++) {
             daysList.add(d);
-            String dayStr = year + "-" + (month<10? "0"+month : month) + "-" + (d<10? "0"+d : d);
+            String dayStr = String.format("%04d-%02d-%02d", year, month, d);
             PreparedStatement psDay = con.prepareStatement(
                 "SELECT COUNT(*) AS total, SUM(status='P') AS present FROM attendance WHERE date=?");
             psDay.setString(1, dayStr);
             ResultSet rsDay = psDay.executeQuery();
-            int totDay=0, presDay=0;
+
+            int totDay = 0, presDay = 0;
             if (rsDay.next()) {
                 totDay = rsDay.getInt("total");
                 presDay = rsDay.getInt("present");
             }
             rsDay.close();
             psDay.close();
-            double percent = (totDay>0) ? (presDay *100.0 / totDay) : 0.0;
+
+            double percent = (totDay > 0) ? (presDay * 100.0 / totDay) : 0.0;
             presentPercentList.add(percent);
         }
 
@@ -318,16 +324,14 @@
                 scales: { y: { beginAtZero: true, max: 100 } },
                 plugins: {
                     legend: { display: false },
-                    tooltip: {
-                        callbacks: { label: ctx => ctx.parsed.y + '%' }
-                    }
+                    tooltip: { callbacks: { label: ctx => ctx.parsed.y + '%' } }
                 }
             }
         });
     </script>
 
     <%
-    } catch(Exception e) {
+    } catch (Exception e) {
         out.println("<p style='color:red;'>Error: " + e + "</p>");
     }
     %>
