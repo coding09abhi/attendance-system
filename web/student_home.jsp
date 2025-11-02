@@ -1,6 +1,5 @@
 <%@ page import="java.sql.*, java.text.*" %>
 <%@ include file="db.jsp" %>
-<%@ include file="auth_check.jsp" %>
 
 <%
   Integer studentId = (Integer) session.getAttribute("student_id");

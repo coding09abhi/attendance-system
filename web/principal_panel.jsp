@@ -5,7 +5,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ include file="db.jsp" %>
-<%@ include file="auth_check.jsp" %>
 
 
 <%
