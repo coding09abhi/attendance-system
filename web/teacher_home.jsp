@@ -1,5 +1,7 @@
 <%@ page import="java.sql.*" %>
 <%@ include file="db.jsp" %>
+<%@ include file="auth_check.jsp" %>
+
 <%
 if (session.getAttribute("username") == null) {
     response.sendRedirect("login.jsp");

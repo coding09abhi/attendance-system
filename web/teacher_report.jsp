@@ -1,5 +1,7 @@
 <%@ page import="java.sql.*,javax.servlet.*,javax.servlet.http.*" %>
 <%@ include file="db.jsp" %>
+<%@ include file="auth_check.jsp" %>
+
 <%
     // ? Prevent direct access without login
     if (session == null || session.getAttribute("username") == null) {
