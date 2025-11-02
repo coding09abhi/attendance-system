@@ -18,8 +18,9 @@ if (date == null || subject == null) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mark Attendance</title>
+    <title>Take Attendance</title>
     <link rel="stylesheet" href="style.css?v=<%= System.currentTimeMillis() %>">
+     <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
     <style>
         body {
             margin: 0;

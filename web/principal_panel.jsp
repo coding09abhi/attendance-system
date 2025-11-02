@@ -37,6 +37,7 @@
     <title>Principal Panel - Attendance Overview</title>
     <link rel="stylesheet" href="style.css?v=<%= System.currentTimeMillis() %>">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+     <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
 
     <style>
         body {

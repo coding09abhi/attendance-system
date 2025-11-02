@@ -14,7 +14,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Student Attendance Panel</title>
+  <title>Student Attendance </title>
+   <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
   <style>
     * {
       box-sizing: border-box;

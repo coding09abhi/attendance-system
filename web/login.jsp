@@ -70,7 +70,7 @@ if(request.getParameter("login") != null){
 <head>
     <title>Login - Attendance</title>
     <link rel="stylesheet" href="style.css?v=<%= System.currentTimeMillis() %>">
-      <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
+    <link rel="icon" type="image/jpeg" href="images/favicon.jpg">
 
     <style>
         /* (your styles here - unchanged) */
